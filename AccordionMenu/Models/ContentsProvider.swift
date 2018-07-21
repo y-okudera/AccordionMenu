@@ -10,58 +10,50 @@ import UIKit
 
 final class ContentsProvider {
 
-    private var sectionContents = [SectionContents]()
-    let currentAnimation = UITableView.RowAnimation.fade
+    private var accordionCellContents = [AccordionCellContents]()
+    let currentAnimation: UITableView.RowAnimation
 
-    func addSectionContent(content: SectionContents) {
-        sectionContents.append(content)
+    init(currentAnimation: UITableView.RowAnimation = .fade) {
+        self.currentAnimation = currentAnimation
     }
 
-    func sectionCount() -> Int {
-        return sectionContents.count
+    func addContent(content: AccordionCellContents) {
+        accordionCellContents.append(content)
     }
 
-    func rowCount(section: Int) -> Int {
-        if sectionContents.isEmpty {
-            return 0
-        }
-        // 開いているセクションだったらcontents分の個数を返す
-        if sectionContents[section].isOpening {
-            return sectionContents[section].contentsTitles?.count ?? 0
-        }
-        // 開いてないセクションだったら0
-        return 0
-    }
-
-    func categoryTitle(section: Int) -> String? {
-        if sectionContents.isEmpty {
-            return nil
-        }
-        return sectionContents[section].categoryTitle
+    func rowCount() -> Int {
+        return accordionCellContents.count
     }
 
     func cellTitle(indexPath: IndexPath) -> String? {
-        if sectionContents.isEmpty {
+        if accordionCellContents.isEmpty {
             return nil
         }
-        if let contentsTitles = sectionContents[indexPath.section].contentsTitles {
-            return contentsTitles[indexPath.row]
+        return accordionCellContents[indexPath.row].title
+    }
+    
+    func cellImage(indexPath: IndexPath) -> UIImage? {
+        if accordionCellContents.isEmpty {
+            return nil
         }
-        return nil
+        return accordionCellContents[indexPath.row].contents
     }
 
-    func isOpening(section: Int) -> Bool {
-        if sectionContents.isEmpty {
+    func isHidden(indexPath: IndexPath) -> Bool {
+        if accordionCellContents.isEmpty {
             return false
         }
-        return sectionContents[section].isOpening
+        return accordionCellContents[indexPath.row].isHidden
     }
 
-    func changeTheOpeningStatus(section: Int) {
-        if sectionContents.isEmpty {
-            return
+    func changeTheHiddenStatus(indexPath: IndexPath) -> Bool? {
+
+        if accordionCellContents[indexPath.row].contents == nil {
+            return nil
         }
-        let isOpen = sectionContents[section].isOpening
-        sectionContents[section].isOpening = !isOpen
+        let currentStatus = accordionCellContents[indexPath.row].isHidden
+        accordionCellContents[indexPath.row].isHidden = !currentStatus
+
+        return accordionCellContents[indexPath.row].isHidden
     }
 }

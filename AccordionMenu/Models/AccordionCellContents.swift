@@ -11,7 +11,7 @@ import UIKit
 struct AccordionCellContents {
 
     var title: String?
-    var isHidden: Bool = false
+    var isHidden: Bool
     var contents: UIImage?
 
     init(title: String? = nil, isHidden: Bool = true, contents: UIImage? = nil) {

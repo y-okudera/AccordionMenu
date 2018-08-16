@@ -37,9 +37,7 @@ final class ViewController: UIViewController {
     @objc func toggleCategoryHeader(gestureRecognizer: UITapGestureRecognizer) {
         guard let header = gestureRecognizer.view as? SectionHeaderView else { return }
         contentsProvider.changeTheOpeningStatus(section: header.section)
-        tableView.beginUpdates()
         tableView.reloadSections([header.section], with: contentsProvider.currentAnimation)
-        tableView.endUpdates()
     }
 }
 
